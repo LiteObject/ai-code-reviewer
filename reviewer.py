@@ -53,7 +53,7 @@ def get_code_review(filename, code) -> None:
     # print(prompt)
     review = llm.invoke(prompt)
 
-    review_filename = f"reviews/REVIEW_{remove_file_ext(filename)}_by_{llm.model}.md"
+    review_filename = f"reviews/REVIEW_{remove_file_ext(filename)}_BY_{llm.model}.md"
     create_file(review_filename, review)
 
 def remove_comments(code: str) -> str:
