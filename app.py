@@ -23,7 +23,7 @@ if __name__ == "__main__":
         # pr_data = git.get_pull_request_data(token, owner, repo, pull_number)        
                 
         # Specify the folder path containing the code files
-        folder_path = "C:/tmp"
+        folder_path = "C:/Users/Owner/source/repos/Temp/demo-node-express/src"
         # Specify the keywords to exclude files
         exclude_keywords = ["venv", "Python311", "node_modules"] 
         # Call the function to review code files

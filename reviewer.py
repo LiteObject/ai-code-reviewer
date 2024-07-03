@@ -16,10 +16,36 @@ def get_code_review(filename, code) -> None:
     # prompt_template = PromptTemplate.from_template("Please review the following code, provide suggestions as bullet point list, and examples if needed in markdown format:\n---\n\n\"\"\"\n{code}\n\"\"\"")
     
     prompt_template = PromptTemplate.from_template("""
-                                                   Please review the following code, provide suggestions as bullet point list, 
-                                                   and small examples if needed in markdown format:
+                                                   Carefully review following piece of code and give your recommendations. Your response should include:
+                                                    - Code snippets or examples where relevant highlighting the changes.
+                                                    - A complete revised version of the code if necessary.
+                                                    - Format the response using markdown specification.
+                                                    
+                                                    {code}
                                                    
-                                                   {code}                                                  
+                                                    Code Review Template:
+                                                   
+                                                    ## Code Review Summary:
+                                                    - This code snippet is written in...
+                                                    - Provide a walk though of the code
+
+                                                    ### Recommendation 1
+                                                      Original Code:
+                                                      ```
+                                                      ```                                                
+                                                      Revised Code:
+                                                      ```
+                                                      ```    
+                                                      Provide a short explanation here. 
+                                                                                                                                             
+                                                    ### Recommendation 2
+                                                      Original Code:
+                                                      ```
+                                                      ```                                                
+                                                      Revised Code:
+                                                      ```
+                                                      ``` 
+                                                      Provide a short explanation here.                              
 
                                                    """)
     escaped_code = code.replace('"', '\\"').replace('\n', '\\n')   
