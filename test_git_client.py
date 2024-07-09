@@ -9,8 +9,11 @@ load_dotenv()
 
 token = os.environ.get("GITHUB_TOKEN")
 owner = "LiteObject"
-repo = "changelog-with-ai"
-pull_number = 6
+repo = "react-testing-with-cypress"
+pull_number = 8
 
-pr_data = git.get_pull_request_data(token, owner, repo, pull_number)
-pprint(pr_data)
+# pr_data = git.get_pull_request_data(token, owner, repo, pull_number)
+# pprint(pr_data)
+
+pr_changes = git.get_pull_request_changes(token, owner, repo, pull_number)
+pprint(pr_changes)

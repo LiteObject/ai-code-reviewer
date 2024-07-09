@@ -8,7 +8,7 @@ def get_pull_request_data(token: str, owner: str, repo: str, pull_number: int) -
     }
 
     # Make the API request to get pull request details
-    url = f'https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}'
+    url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}"
     response = requests.get(url, headers=headers)
 
     # Check if the request was successful
@@ -21,29 +21,9 @@ def get_pull_request_data(token: str, owner: str, repo: str, pull_number: int) -
 
         # print(f'Pull Request Title: {pr_title}')
     else:
-        print(f'Error: {response.status_code} - {response.text}')
+        print(f"Error: {response.status_code} - {response.text}")
 
     return pr_data
-
-def read_pull_request_description(token: str, owner: str, repo: str, pull_number: int) -> str:
-   
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/json"
-    }
-     
-    url = f"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}"
-    response = requests.get(url, headers=headers)
-    data = response.json()
-    
-    description = ""
-
-    if response.status_code == 200:        
-        description = data["body"]
-    else:
-        print(f"Status Code: {response.status_code}, Error: {data}")
-
-    return description
 
 def get_pull_request_changes(token: str, owner: str, repo: str, pull_number: int) -> str:
     

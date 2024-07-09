@@ -5,9 +5,10 @@ from file_helper import create_file
 import re
 import os
 
+# For more information on LangChain Ollama API: https://github.com/ollama/ollama/blob/main/docs/api.md
 llm = Ollama(
-    # assuming you have Ollama installed and have llama3 model pulled with `ollama pull llama3 `
-    model="llama3"
+    base_url='http://localhost:11434',
+    model="phi3"
 )
 
 supported_extensions = [".py", ".ts", ".js", ".jsx"]
@@ -48,8 +49,8 @@ def get_code_review(filename, code) -> None:
                                                       Provide a short explanation here.                              
 
                                                    """)
-    escaped_code = code.replace('"', '\\"').replace('\n', '\\n')   
-    prompt = prompt_template.invoke({"code": escaped_code})
+    #escaped_code = code.replace('"', '\\"').replace('\n', '\\n')   
+    prompt = prompt_template.invoke({"code": code})
     # print(prompt)
     review = llm.invoke(prompt)
 
