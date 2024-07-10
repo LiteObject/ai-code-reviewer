@@ -8,12 +8,10 @@ import os
 # For more information on LangChain Ollama API: https://github.com/ollama/ollama/blob/main/docs/api.md
 llm = Ollama(
     base_url='http://localhost:11434',
-    model="phi3"
+    model="llama3"
 )
 
-supported_extensions = [".py", ".ts", ".js", ".jsx"]
-
-def get_code_review(filename, code) -> None:
+def get_code_review(review_filename, code) -> None:
     # prompt_template = PromptTemplate.from_template("Please review the following code, provide suggestions as bullet point list, and examples if needed in markdown format:\n---\n\n\"\"\"\n{code}\n\"\"\"")
     
     prompt_template = PromptTemplate.from_template("""
@@ -54,7 +52,7 @@ def get_code_review(filename, code) -> None:
     # print(prompt)
     review = llm.invoke(prompt)
 
-    review_filename = f"reviews/REVIEW_{remove_file_ext(filename)}_BY_{llm.model}.md"
+    review_filename = f"reviews/REVIEW_{remove_file_ext(review_filename)}_BY_{llm.model}.md"
     create_file(review_filename, review)
 
 def remove_comments(code: str) -> str:
@@ -72,9 +70,22 @@ def remove_file_ext(filename: str) -> str:
     filename_without_ext = filename.rsplit('.', 1)[0]
     return filename_without_ext
 
-def review_code_files(folder_path: str, exclude_keywords=None) -> None:
+def read_file(file_path: str) -> str:
+    with open(file_path, "r", encoding="utf-8") as file:
+        content = file.read()
+    return content
+
+def review_file(file_path: str) -> None:
+    code = read_file(file_path)
+    code = remove_comments(code)
+    file_name = os.path.basename(file_path)
+    get_code_review(file_name, code)
+
+def review_files(folder_path: str, exclude_keywords=None) -> None:
     if exclude_keywords is None:
         exclude_keywords = []
+
+    supported_extensions = [".py", ".ts", ".js", ".jsx"]
 
     for root, dirs, files in os.walk(folder_path):
         for file in files:
@@ -87,18 +98,17 @@ def review_code_files(folder_path: str, exclude_keywords=None) -> None:
                     continue
 
                 try:
-                    with open(file_path, "r", encoding="utf-8") as f:
-                        code = f.read()
-                        # Remove comments from the code
-                        code = remove_comments(code)                                          
+                    code = read_file(file_path)
+                    # Remove comments from the code
+                    code = remove_comments(code)                                          
 
-                        review = get_code_review(file, code)                        
-                        if review:
-                            lines = review.split("\n")
-                            for line in lines:
-                                if ":" in line:
-                                    line_number, suggestion = line.split(":", 1)
-                                    print(f"File: {file}, Line: {line_number.strip()}, Suggestion: {suggestion.strip()}")
+                    review = get_code_review(file, code)                        
+                    if review:
+                        lines = review.split("\n")
+                        for line in lines:
+                            if ":" in line:
+                                line_number, suggestion = line.split(":", 1)
+                                print(f"File: {file}, Line: {line_number.strip()}, Suggestion: {suggestion.strip()}")
                 except UnicodeDecodeError:
                     print(f"Skipping file: {file_path} (UnicodeDecodeError)")
                     continue

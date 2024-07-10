@@ -22,17 +22,40 @@ if __name__ == "__main__":
     repo = "react-testing-with-cypress"
     pull_number = 8
 
+    ## Specify the keywords to exclude files
+    exclude_keywords = ["venv", "Python311", "node_modules"] 
+
     try:       
         # pr_data = git.get_pull_request_data(token, owner, repo, pull_number)        
                 
         ## Specify the folder path containing the code files
-        #folder_path = "C:/Users/Owner/source/repos/Temp/demo-node-express/src"
-        ## Specify the keywords to exclude files
-        #exclude_keywords = ["venv", "Python311", "node_modules"] 
-        ## Call the function to review code files
-        #reviewer.review_code_files(folder_path, exclude_keywords)
+        folder_path = "C:/tmp"
+        reviewer.review_files(folder_path, exclude_keywords)
 
-        pr_changes = git.get_pull_request_changes(token, owner, repo, pull_number)
-        reviewer.get_code_review("react-testing-with-cypress_pr_6", pr_changes)
+        # while True:
+        #     choice = input("Enter 'f' to review a single file or 'd' to review all files in a folder: ")
+            
+        #     if choice.lower() == 'f':
+        #         file_path = input("Enter the file path: ")
+        #         if os.path.exists(file_path) and os.path.isfile(file_path):
+        #             reviewer.review_file(file_path)
+        #             break
+        #         else:
+        #             print("Invalid file path. Please try again.")
+            
+        #     elif choice.lower() == 'd':
+        #         folder_path = input("Enter the folder path: ")
+        #         if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        #             reviewer.review_files(folder_path, exclude_keywords)
+        #             break
+        #         else:
+        #             print("Invalid folder path. Please try again.")
+            
+        #     else:
+        #         print("Invalid choice. Please try again.")
+        
+
+        # pr_changes = git.get_pull_request_changes(token, owner, repo, pull_number)
+        # reviewer.get_code_review("react-testing-with-cypress_pr_6", pr_changes)
     except Exception as e:
         print(f"Error: {e}")
